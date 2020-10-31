@@ -23,6 +23,25 @@ namespace Chisu_Diana_Lab2
         public MainWindow()
         {
             InitializeComponent();
+            // creare obiect binding pentru comanda 
+            CommandBinding cmd1 = new   CommandBinding();
+            //asociere comanda
+            cmd1.Command = ApplicationCommands.Print;
+            //input gesture: I + Alt    
+            ApplicationCommands.Print.InputGestures.Add(          
+                new KeyGesture(Key.I, ModifierKeys.Alt));
+            //asociem un handler
+            cmd1.Executed += new ExecutedRoutedEventHandler(CtrlP_CommandHandler); //adaugam la colectia CommandBindings
+            this.CommandBindings.Add(cmd1);
+
+            //Doughnuts>Stop
+            //comanda custom
+            CommandBinding cmd2 = new CommandBinding();
+            cmd2.Command = CustomCommands.StopCommand.Launch;
+            cmd2.Executed += new
+            ExecutedRoutedEventHandler(CtrlS_CommandHandler);//asociem handler
+            this.CommandBindings.Add(cmd2);
+
         }
 
         private DoughnutMachine myDoughnutMachine;
@@ -230,6 +249,16 @@ namespace Chisu_Diana_Lab2
             }
         }
 
+        private void CtrlP_CommandHandler(object sender, ExecutedRoutedEventArgs e) {
+            MessageBox.Show("You have in stock:" + mRaisedGlazed + " Glazed," + mRaisedSugar +
+                " Sugar," + mFilledLemon + " Lemon," + mFilledChocolate + " Chocolate," + mFilledVanilla + " Vanilla");
+        }
+        private void CtrlS_CommandHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            //handler pentru comanda Ctrl+S -> se va executa stopToolStripMenuItem_Click
+            MessageBox.Show("Ctrl+S was pressed! The doughnut machine will stop!");
+            this.stopToolStripMenuItem_Click(sender, e);
+        }
 
     }
 
